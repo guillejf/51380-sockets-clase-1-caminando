@@ -18,6 +18,21 @@ const socketServer = new Server(httpServer);
 
 socketServer.on("connection", (socket) => {
   console.log("se abrio un canal de soket" + socket.id);
+  setInterval(() => {
+    socket.emit("msg_back_to_front", {
+      msg: Date.now() + " hola desde el back al socket",
+    });
+
+    socket.broadcast.emit("msg_back_to_todos_menos_socket", {
+      msg: "hola desde el back a todos menos el socket",
+    });
+
+    socketServer.emit("msg_back_todos", { msg: "hola desde el back a todos" });
+  }, 2000);
+
+  socket.on("msg_front_to_back", (data) => {
+    console.log(JSON.stringify(data));
+  });
 });
 
 app.use(express.json());
