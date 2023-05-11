@@ -16,6 +16,10 @@ const httpServer = app.listen(port, () => {
 
 const socketServer = new Server(httpServer);
 
+socketServer.on("connection", (socket) => {
+  console.log("se abrio un canal de soket" + socket.id);
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
